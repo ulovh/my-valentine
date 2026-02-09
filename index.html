@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín?</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fce4ec; /* Fondo rosa pastel */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(206, 147, 216, 0.3);
+            max-width: 90%;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #8e24aa; /* Color lila */
+            margin-bottom: 20px;
+        }
+
+        .gif-container img {
+            max-width: 230px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+            min-height: 100px;
+        }
+
+        #yesBtn {
+            background-color: #f06292; /* Rosa */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        #noBtn {
+            background-color: #ba68c8; /* Lila */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="title" id="question">¿Quieres ser mi San Valentín? ❤️</h1>
+        <div class="gif-container">
+            <img id="mainGif" src="https://media.tenor.com/S-K6_Y9_0m8AAAAi/cat-love.gif" alt="Gatito tierno">
+        </div>
+        <div class="buttons">
+            <button id="yesBtn">¡Sí!</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.querySelector('#yesBtn');
+        const noBtn = document.querySelector('#noBtn');
+        const mainGif = document.querySelector('#mainGif');
+        const question = document.querySelector('#question');
+
+        let scale = 1;
+
+        // Lógica para que el botón NO huya
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // El botón SÍ crece cada vez que intentan darle a NO
+            scale += 0.4;
+            yesBtn.style.transform = `scale(${scale})`;
+        });
+
+        // Lógica para cuando acepta
+        yesBtn.addEventListener('click', () => {
+            question.innerHTML = "¡Sabía que dirías que sí! 😍";
+            mainGif.src = "https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif";
+            noBtn.style.display = 'none';
+            yesBtn.style.transform = 'scale(1)';
+            yesBtn.innerHTML = "¡Te amo mucho! ❤️";
+        });
+    </script>
+</body>
+</html>
+
