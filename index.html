@@ -7,16 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Paleta de colores pasteles más cálidos y oscuros */
-            --fondo-oscuro: #f8bbd0; 
+            --fondo-oscuro: #f48fb1; /* Rosa pastel más profundo */
+            --lila-profundo: #ce93d8; /* Lila cálido */
             --rosa-fuerte: #ff8fab;
-            --lila-profundo: #d1c4e9;
             --texto: #5d4037;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
+            /* Fondo corregido para que sea cálido desde el inicio */
             background: linear-gradient(135deg, var(--fondo-oscuro), var(--lila-profundo));
             height: 100vh;
             display: flex;
@@ -31,7 +31,9 @@
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 240, 245, 0.98); /* Blanco rosado casi opaco */
+            /* Fondo sutilmente transparente para ver los corazones atrás */
+            background: rgba(255, 230, 240, 0.4); 
+            backdrop-filter: blur(2px);
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -42,37 +44,50 @@
         }
 
         .cat-hug img {
-            width: 180px;
+            width: 200px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+            animation: pulse 2s infinite;
         }
 
-        /* Lluvia de corazones 🩷 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Lluvia de corazones 🩷 lenta */
         .heart-fall {
             position: absolute;
             top: -10%;
             font-size: 24px;
             animation: fall linear forwards;
             user-select: none;
-            z-index: 1; /* Por detrás del texto */
-            opacity: 0.7;
+            z-index: 0; 
+            opacity: 0.8;
         }
 
         @keyframes fall {
-            to { transform: translateY(110vh) rotate(20deg); }
+            to { transform: translateY(110vh) rotate(45deg); }
         }
 
         /* --- CONTENEDOR DE LA CARTA --- */
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 40px 25px;
             border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             width: 85%;
             max-width: 400px;
             z-index: 10;
-            display: none; /* Oculto hasta el click */
+            display: none; 
             position: relative;
+            animation: appear 1s ease;
+        }
+
+        @keyframes appear {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .title {
@@ -80,13 +95,12 @@
             font-size: 2.3rem;
             color: var(--texto);
             margin-bottom: 20px;
-            z-index: 20;
         }
 
         .gif-container img, .photo-container img {
             width: 100%;
-            max-width: 200px;
-            border-radius: 25px;
+            max-width: 180px;
+            border-radius: 20px;
             margin-bottom: 20px;
         }
 
@@ -95,7 +109,7 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-            min-height: 250px; /* Espacio para que el botón crezca */
+            min-height: 250px;
             position: relative;
         }
 
@@ -110,28 +124,27 @@
         }
 
         #yesBtn { background-color: var(--rosa-fuerte); color: white; z-index: 100; }
-        #noBtn { background-color: #e0e0e0; color: #777; z-index: 50; }
+        #noBtn { background-color: #eee; color: #999; z-index: 50; }
 
-        /* --- PANTALLA ÉXITO --- */
         #success-screen { display: none; }
         .love-phrases p { color: #880e4f; margin-bottom: 12px; font-style: italic; font-size: 1.1rem; }
     </style>
 </head>
-<body onclick="startApp()">
+<body onload="createHearts()">
 
-    <div id="splash-screen">
+    <div id="splash-screen" onclick="startApp()">
         <div class="cat-hug">
-            <img src="https://media.tenor.com/On7VzRUn698AAAAi/peach-goma.gif" alt="Gaticos Abrazados">
+            <img src="https://media.tenor.com/On7VzRUn698AAAAi/peach-goma.gif" alt="Gaticos">
         </div>
-        <h2 class="title" style="font-size: 1.6rem;">Toca en cualquier lado para continuar... ❤️</h2>
-        <p style="color: #999; font-size: 0.8rem; margin-top: 10px;">(Sube el volumen 🔊)</p>
+        <h2 class="title" style="font-size: 1.8rem; margin: 0 15px;">Toca en cualquier lado para continuar... ❤️</h2>
+        <p style="color: var(--texto); font-size: 0.9rem; margin-top: 15px; opacity: 0.7;">(Sube el volumen 🔊)</p>
     </div>
 
     <div class="container" id="main-card">
         <div id="question-screen">
             <h1 class="title">¿Quieres ser mi San Valentín? ❤️</h1>
             <div class="gif-container">
-                <img src="https://media.tenor.com/YV9Xy59fFmAAAAAi/milk-and-mocha-bear.gif" alt="Gatito tierno">
+                <img src="https://media.tenor.com/YV9Xy59fFmAAAAAi/milk-and-mocha-bear.gif" alt="Gatito">
             </div>
             <div class="buttons">
                 <button id="yesBtn">¡SÍ! 😍</button>
@@ -146,7 +159,7 @@
             </div>
             <div class="love-phrases">
                 <p>Eres mi persona favorita en todo el mundo.</p>
-                <p><strong>¡Gracias por estar en mi vida! ✨</strong></p>
+                <p><strong>¡Te amo un montón! ✨</strong></p>
             </div>
             <audio id="loveSong" loop>
                 <source src="musica.mp3" type="audio/mpeg">
@@ -161,6 +174,20 @@
         let yesScale = 1;
         let noScale = 1;
 
+        // Inicia la lluvia de corazones apenas carga la web
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '🩷';
+                heart.classList.add('heart-fall');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 4 + 5) + 's'; // Lento
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 9000);
+            }, 600);
+        }
+
         function startApp() {
             if (appStarted) return;
             appStarted = true;
@@ -169,42 +196,22 @@
                 document.getElementById('splash-screen').style.display = 'none';
                 document.getElementById('main-card').style.display = 'block';
             }, 800);
-            createHearts();
-        }
-
-        // Lluvia lenta de corazones 🩷
-        function createHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.innerHTML = '🩷';
-                heart.classList.add('heart-fall');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 5 + 4) + 's'; // Más lento (4-9 segundos)
-                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 8000);
-            }, 600); // Frecuencia más espaciada
         }
 
         function moverNo() {
-            // Movimiento aleatorio
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
-            
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
             
-            // El SI crece masivamente, el NO se encoge
-            yesScale += 0.7;
+            yesScale += 0.8;
             noScale -= 0.12;
-            
             if (noScale < 0.2) noScale = 0.2;
             
             yesBtn.style.transform = `scale(${yesScale})`;
             noBtn.style.transform = `scale(${noScale})`;
 
-            // Si el botón SI es demasiado grande, cubre todo
             if (yesScale > 6) {
                 yesBtn.style.width = "100vw";
                 yesBtn.style.height = "100vh";
@@ -224,15 +231,9 @@
         yesBtn.addEventListener('click', () => {
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'block';
-            
-            // Resetear estilo por si el botón ocupaba toda la pantalla
-            yesBtn.style.position = "relative";
-            yesBtn.style.width = "auto";
-            yesBtn.style.height = "auto";
-            yesBtn.style.transform = "scale(1)";
-
+            yesBtn.style.display = "none";
             document.querySelector('#loveSong').play();
-            document.body.style.background = "linear-gradient(135deg, #f48fb1, #ce93d8)";
+            document.body.style.background = "linear-gradient(135deg, #f06292, #8e24aa)";
         });
     </script>
 </body>
