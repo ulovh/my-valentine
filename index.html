@@ -24,20 +24,19 @@
             font-family: 'Quicksand', sans-serif;
             overflow: hidden;
             text-align: center;
-            cursor: pointer;
         }
 
         /* --- PANTALLA DE INICIO --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.8s ease;
+            cursor: pointer;
         }
 
         .heart-fall {
@@ -47,6 +46,7 @@
             font-size: 20px;
             animation: fall linear forwards;
             user-select: none;
+            z-index: 1;
         }
 
         @keyframes fall {
@@ -62,8 +62,8 @@
             width: 85%;
             max-width: 400px;
             z-index: 10;
-            display: none; /* Se muestra tras el splash */
-            animation: fadeIn 1s ease;
+            display: none;
+            position: relative;
         }
 
         .title {
@@ -71,21 +71,25 @@
             font-size: 2.5rem;
             color: var(--texto);
             margin-bottom: 25px;
+            position: relative;
+            z-index: 20;
         }
 
         .gif-container img, .photo-container img {
             width: 100%;
-            max-width: 220px;
+            max-width: 200px;
             border-radius: 25px;
             margin-bottom: 20px;
+            position: relative;
+            z-index: 20;
         }
 
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            height: 200px;
+            gap: 20px;
+            min-height: 250px;
             position: relative;
         }
 
@@ -96,24 +100,32 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
 
-        #yesBtn { background-color: var(--rosa-fuerte); color: white; box-shadow: 0 5px 15px rgba(255, 143, 171, 0.4); }
-        #noBtn { background-color: #d1d1d1; color: white; }
+        #yesBtn { 
+            background-color: var(--rosa-fuerte); 
+            color: white; 
+            z-index: 100; /* Siempre encima */
+        }
+
+        #noBtn { 
+            background-color: #d1d1d1; 
+            color: white; 
+            z-index: 50;
+        }
 
         /* --- PANTALLA ÉXITO --- */
         #success-screen { display: none; }
-        .love-phrases p { color: #ad1457; margin-bottom: 10px; font-style: italic; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .love-phrases p { color: #ad1457; margin-bottom: 10px; font-style: italic; font-size: 1.2rem; }
     </style>
 </head>
 <body onclick="startApp()">
 
     <div id="splash-screen">
-        <h2 class="title" style="font-size: 1.8rem;">Toca en cualquier lado para continuar...</h2>
-        <p style="color: var(--texto); font-size: 0.9rem;">(Activa el sonido 🔊)</p>
+        <h2 class="title" style="font-size: 1.8rem;">Toca aquí para continuar... ❤️</h2>
+        <p style="color: var(--texto); font-size: 0.9rem;">(Activa el volumen)</p>
     </div>
 
     <div class="container" id="main-card">
@@ -134,8 +146,8 @@
                 <img src="foto.jpg" alt="Nosotros" onerror="this.src='https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif'">
             </div>
             <div class="love-phrases">
-                <p>Eres la casualidad más bonita.</p>
-                <p><strong>Prometo cuidarte siempre. ✨</strong></p>
+                <p>Eres la casualidad más hermosa de mi vida.</p>
+                <p><strong>¡Te amo un montón! ✨</strong></p>
             </div>
             <audio id="loveSong" loop>
                 <source src="musica.mp3" type="audio/mpeg">
@@ -147,22 +159,19 @@
         let appStarted = false;
         const yesBtn = document.querySelector('#yesBtn');
         const noBtn = document.querySelector('#noBtn');
+        const mainCard = document.querySelector('#main-card');
+        
         let yesScale = 1;
         let noScale = 1;
 
-        // Función para iniciar la experiencia
         function startApp() {
             if (appStarted) return;
             appStarted = true;
-            document.getElementById('splash-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('main-card').style.display = 'block';
-            }, 800);
+            document.getElementById('splash-screen').style.display = 'none';
+            mainCard.style.display = 'block';
             createHearts();
         }
 
-        // Lluvia de corazones
         function createHearts() {
             setInterval(() => {
                 const heart = document.createElement('div');
@@ -170,33 +179,65 @@
                 heart.classList.add('heart-fall');
                 heart.style.left = Math.random() * 100 + 'vw';
                 heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                heart.style.opacity = Math.random();
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), 5000);
-            }, 300);
+            }, 400);
         }
 
-        // Botón No que huye y se encoge
-        noBtn.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.position = 'absolute';
+        // Función para mover el botón NO
+        function moverNo() {
+            // Calcular posiciones seguras dentro de la pantalla
+            const padding = 50;
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
+            
+            noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
             
-            // Efectos de tamaño
-            yesScale += 0.4;
-            noScale -= 0.1;
-            if (noScale < 0.3) noScale = 0.3; // Límite de pequeñez
+            // Crecer el SÍ y encoger el NO
+            yesScale += 0.8; // Crece rápido
+            noScale -= 0.15; // Se encoge
+            
+            if (noScale < 0.2) noScale = 0.2; // Que no desaparezca del todo
             
             yesBtn.style.transform = `scale(${yesScale})`;
             noBtn.style.transform = `scale(${noScale})`;
-        });
 
-        // Botón Sí
+            // Si el SÍ ya es gigante, forzamos que esté al frente
+            if(yesScale > 5) {
+                yesBtn.style.width = "100vw";
+                yesBtn.style.height = "100vh";
+                yesBtn.style.position = "fixed";
+                yesBtn.style.top = "0";
+                yesBtn.style.left = "0";
+                yesBtn.style.borderRadius = "0";
+                yesBtn.style.display = "flex";
+                yesBtn.style.justifyContent = "center";
+                yesBtn.style.alignItems = "center";
+                yesBtn.style.fontSize = "3rem";
+            }
+        }
+
+        // En celular usamos 'touchstart' para que reaccione al toque
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moverNo();
+        });
+        
+        // También mantenemos el mouseover para PC
+        noBtn.addEventListener('mouseover', moverNo);
+
         yesBtn.addEventListener('click', () => {
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'block';
+            
+            // Restaurar botón si se hizo gigante
+            yesBtn.style.position = "relative";
+            yesBtn.style.width = "auto";
+            yesBtn.style.height = "auto";
+            yesBtn.style.transform = "scale(1)";
+
             document.querySelector('#loveSong').play();
             document.body.style.background = "linear-gradient(135deg, #ffc2d1, #ff8fab)";
         });
