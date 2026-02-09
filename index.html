@@ -3,104 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Quieres ser mi San Valentín?</title>
+    <title>Para mi niña linda ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #fce4ec;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             font-family: 'Quicksand', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
             text-align: center;
         }
+
         .container {
             background: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 30px;
             box-shadow: 0 10px 25px rgba(206, 147, 216, 0.3);
-            max-width: 90%;
-            z-index: 10;
+            max-width: 400px;
+            width: 90%;
+            transition: all 0.5s ease;
         }
+
         .title {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: #8e24aa;
             margin-bottom: 20px;
         }
-        .gif-container img {
-            max-width: 200px;
+
+        .gif-container img, .photo-container img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 20px;
             margin-bottom: 20px;
-            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
-            min-height: 100px;
+            min-height: 150px;
         }
-        #yesBtn {
-            background-color: #f06292;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.1rem;
             border-radius: 50px;
+            border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s;
+            transition: 0.3s;
         }
-        #noBtn {
-            background-color: #ba68c8;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
+
+        #yesBtn { background-color: #f06292; color: white; z-index: 1000; }
+        #noBtn { background-color: #ba68c8; color: white; }
+
+        /* Pantalla de éxito oculta */
+        #success-screen { display: none; }
+        
+        .love-phrases {
+            font-size: 1.1rem;
+            color: #ad1457;
+            line-height: 1.6;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        #music-info { 
+            margin-top: 20px; 
+            font-size: 0.8rem; 
+            color: #888;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="title" id="question">¿Quieres ser mi San Valentín? ❤️</h1>
-        <div class="gif-container">
-            <img id="mainGif" src="https://media.tenor.com/S-K6_Y9_0m8AAAAi/cat-love.gif" alt="Gatito tierno">
+
+    <div class="container" id="main-card">
+        <div id="question-screen">
+            <h1 class="title">¿Quieres ser mi San Valentín? ❤️</h1>
+            <div class="gif-container">
+                <img id="mainGif" src="https://media.tenor.com/S-K6_Y9_0m8AAAAi/cat-love.gif" alt="Gatito">
+            </div>
+            <div class="buttons">
+                <button id="yesBtn">¡SÍ! 😍</button>
+                <button id="noBtn">No</button>
+            </div>
         </div>
-        <div class="buttons">
-            <button id="yesBtn">¡Sí!</button>
-            <button id="noBtn">No</button>
+
+        <div id="success-screen">
+            <h1 class="title">¡Siii! ¡Te amo muchísimo! ❤️</h1>
+            <div class="photo-container">
+                <img src="foto.jpg" alt="Nuestra Foto" onerror="this.src='https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif'">
+            </div>
+            <div class="love-phrases">
+                <p>"Cada momento a tu lado es un regalo."</p>
+                <p><strong>Eres la persona más especial de mi vida. ✨</strong></p>
+                <p>¡Gracias por hacerme tan feliz!</p>
+            </div>
+            
+            <div id="music-info">
+                <p>🎵 Escuchando nuestra canción...</p>
+                <audio id="loveSong" loop>
+                    <source src="musica.mp3" type="audio/mpeg">
+                    Tu navegador no soporta audio.
+                </audio>
+            </div>
         </div>
     </div>
+
     <script>
         const yesBtn = document.querySelector('#yesBtn');
         const noBtn = document.querySelector('#noBtn');
-        const mainGif = document.querySelector('#mainGif');
-        const question = document.querySelector('#question');
+        const questionScreen = document.querySelector('#question-screen');
+        const successScreen = document.querySelector('#success-screen');
+        const loveSong = document.querySelector('#loveSong');
+        
         let scale = 1;
+
+        // El botón NO escapa
         noBtn.addEventListener('mouseover', () => {
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             noBtn.style.position = 'absolute';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-            scale += 0.4;
+            
+            // El botón SI crece para que sea más fácil darle
+            scale += 0.5;
             yesBtn.style.transform = `scale(${scale})`;
         });
+
+        // Al hacer clic en SÍ
         yesBtn.addEventListener('click', () => {
-            question.innerHTML = "¡Sabía que dirías que sí! 😍";
-            mainGif.src = "https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif";
-            noBtn.style.display = 'none';
-            yesBtn.style.transform = 'scale(1)';
-            yesBtn.innerHTML = "¡Te amo mucho! ❤️";
+            questionScreen.style.display = 'none';
+            successScreen.style.display = 'block';
+            
+            // Intentar reproducir la música que subiste
+            loveSong.play().catch(error => {
+                console.log("La reproducción automática fue bloqueada, pero se intentó: ", error);
+            });
+
+            // Cambiar color de fondo para celebrar
+            document.body.style.backgroundColor = "#f8bbd0";
         });
     </script>
 </body>
