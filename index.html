@@ -26,6 +26,7 @@
             max-width: 400px;
             width: 90%;
             transition: all 0.5s ease;
+            position: relative;
         }
 
         .title {
@@ -48,7 +49,7 @@
             justify-content: center;
             gap: 15px;
             align-items: center;
-            min-height: 150px;
+            min-height: 150px; /* Espacio para que el botón crezca */
         }
 
         button {
@@ -62,9 +63,9 @@
         }
 
         #yesBtn { background-color: #f06292; color: white; z-index: 1000; }
-        #noBtn { background-color: #ba68c8; color: white; }
+        #noBtn { background-color: #ba68c8; color: white; transition: 0.2s; }
 
-        /* Pantalla de éxito oculta */
+        /* Pantalla de éxito oculta al inicio */
         #success-screen { display: none; }
         
         .love-phrases {
@@ -108,7 +109,7 @@
             </div>
             
             <div id="music-info">
-                <p>🎵 Escuchando nuestra canción...</p>
+                <p>🎵 Reproduciendo nuestra canción...</p>
                 <audio id="loveSong" loop>
                     <source src="musica.mp3" type="audio/mpeg">
                     Tu navegador no soporta audio.
@@ -126,7 +127,7 @@
         
         let scale = 1;
 
-        // El botón NO escapa
+        // Lógica para que el botón "No" escape
         noBtn.addEventListener('mouseover', () => {
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -134,22 +135,23 @@
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
             
-            // El botón SI crece para que sea más fácil darle
+            // El botón "Sí" crece
             scale += 0.5;
             yesBtn.style.transform = `scale(${scale})`;
         });
 
-        // Al hacer clic en SÍ
+        // Lógica para cuando hace clic en "SÍ"
         yesBtn.addEventListener('click', () => {
+            // 1. Ocultar la pregunta y mostrar la sorpresa
             questionScreen.style.display = 'none';
             successScreen.style.display = 'block';
             
-            // Intentar reproducir la música que subiste
+            // 2. Intentar reproducir la música (musica.mp3)
             loveSong.play().catch(error => {
-                console.log("La reproducción automática fue bloqueada, pero se intentó: ", error);
+                console.log("Error al reproducir audio: ", error);
             });
 
-            // Cambiar color de fondo para celebrar
+            // 3. Cambiar el fondo a un rosa más intenso
             document.body.style.backgroundColor = "#f8bbd0";
         });
     </script>
