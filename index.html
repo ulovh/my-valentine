@@ -3,93 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi niña linda ❤️</title>
+    <title>Un mensaje especial ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --rosa-claro: #ffecf2;
+            --rosa-fuerte: #ff8fab;
+            --lila-pastel: #e2d1f9;
+            --texto: #7d5a5a;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: #fce4ec;
+            background: linear-gradient(135deg, var(--rosa-claro), var(--lila-pastel));
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             font-family: 'Quicksand', sans-serif;
-            overflow-x: hidden;
+            overflow: hidden;
             text-align: center;
+            cursor: pointer;
         }
 
+        /* --- PANTALLA DE INICIO --- */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .heart-fall {
+            position: absolute;
+            top: -10%;
+            color: #ffb3c1;
+            font-size: 20px;
+            animation: fall linear forwards;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
         .container {
             background: white;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 10px 25px rgba(206, 147, 216, 0.3);
+            padding: 40px 20px;
+            border-radius: 40px;
+            box-shadow: 0 15px 35px rgba(255, 143, 171, 0.2);
+            width: 85%;
             max-width: 400px;
-            width: 90%;
-            transition: all 0.5s ease;
-            position: relative;
+            z-index: 10;
+            display: none; /* Se muestra tras el splash */
+            animation: fadeIn 1s ease;
         }
 
         .title {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.2rem;
-            color: #8e24aa;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: var(--texto);
+            margin-bottom: 25px;
         }
 
         .gif-container img, .photo-container img {
             width: 100%;
-            max-width: 250px;
-            border-radius: 20px;
+            max-width: 220px;
+            border-radius: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
             align-items: center;
-            min-height: 150px; /* Espacio para que el botón crezca */
+            gap: 15px;
+            height: 200px;
+            position: relative;
         }
 
         button {
-            padding: 15px 25px;
+            padding: 15px 30px;
             font-size: 1.1rem;
             border-radius: 50px;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        #yesBtn { background-color: #f06292; color: white; z-index: 1000; }
-        #noBtn { background-color: #ba68c8; color: white; transition: 0.2s; }
+        #yesBtn { background-color: var(--rosa-fuerte); color: white; box-shadow: 0 5px 15px rgba(255, 143, 171, 0.4); }
+        #noBtn { background-color: #d1d1d1; color: white; }
 
-        /* Pantalla de éxito oculta al inicio */
+        /* --- PANTALLA ÉXITO --- */
         #success-screen { display: none; }
-        
-        .love-phrases {
-            font-size: 1.1rem;
-            color: #ad1457;
-            line-height: 1.6;
-            font-style: italic;
-            margin-top: 15px;
-        }
+        .love-phrases p { color: #ad1457; margin-bottom: 10px; font-style: italic; }
 
-        #music-info { 
-            margin-top: 20px; 
-            font-size: 0.8rem; 
-            color: #888;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body onclick="startApp()">
+
+    <div id="splash-screen">
+        <h2 class="title" style="font-size: 1.8rem;">Toca en cualquier lado para continuar...</h2>
+        <p style="color: var(--texto); font-size: 0.9rem;">(Activa el sonido 🔊)</p>
+    </div>
 
     <div class="container" id="main-card">
         <div id="question-screen">
             <h1 class="title">¿Quieres ser mi San Valentín? ❤️</h1>
             <div class="gif-container">
-                <img id="mainGif" src="https://media.tenor.com/S-K6_Y9_0m8AAAAi/cat-love.gif" alt="Gatito">
+                <img src="https://media.tenor.com/S-K6_Y9_0m8AAAAi/cat-love.gif" alt="Gatito">
             </div>
             <div class="buttons">
                 <button id="yesBtn">¡SÍ! 😍</button>
@@ -98,36 +129,54 @@
         </div>
 
         <div id="success-screen">
-            <h1 class="title">¡Siii! ¡Te amo muchísimo! ❤️</h1>
+            <h1 class="title">¡Siii! Sabía que aceptarías ❤️</h1>
             <div class="photo-container">
-                <img src="foto.jpg" alt="Nuestra Foto" onerror="this.src='https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif'">
+                <img src="foto.jpg" alt="Nosotros" onerror="this.src='https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif'">
             </div>
             <div class="love-phrases">
-                <p>"Cada momento a tu lado es un regalo."</p>
-                <p><strong>Eres la persona más especial de mi vida. ✨</strong></p>
-                <p>¡Gracias por hacerme tan feliz!</p>
+                <p>Eres la casualidad más bonita.</p>
+                <p><strong>Prometo cuidarte siempre. ✨</strong></p>
             </div>
-            
-            <div id="music-info">
-                <p>🎵 Reproduciendo nuestra canción...</p>
-                <audio id="loveSong" loop>
-                    <source src="musica.mp3" type="audio/mpeg">
-                    Tu navegador no soporta audio.
-                </audio>
-            </div>
+            <audio id="loveSong" loop>
+                <source src="musica.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </div>
 
     <script>
+        let appStarted = false;
         const yesBtn = document.querySelector('#yesBtn');
         const noBtn = document.querySelector('#noBtn');
-        const questionScreen = document.querySelector('#question-screen');
-        const successScreen = document.querySelector('#success-screen');
-        const loveSong = document.querySelector('#loveSong');
-        
-        let scale = 1;
+        let yesScale = 1;
+        let noScale = 1;
 
-        // Lógica para que el botón "No" escape
+        // Función para iniciar la experiencia
+        function startApp() {
+            if (appStarted) return;
+            appStarted = true;
+            document.getElementById('splash-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('main-card').style.display = 'block';
+            }, 800);
+            createHearts();
+        }
+
+        // Lluvia de corazones
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.classList.add('heart-fall');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.opacity = Math.random();
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+
+        // Botón No que huye y se encoge
         noBtn.addEventListener('mouseover', () => {
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -135,24 +184,21 @@
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
             
-            // El botón "Sí" crece
-            scale += 0.5;
-            yesBtn.style.transform = `scale(${scale})`;
+            // Efectos de tamaño
+            yesScale += 0.4;
+            noScale -= 0.1;
+            if (noScale < 0.3) noScale = 0.3; // Límite de pequeñez
+            
+            yesBtn.style.transform = `scale(${yesScale})`;
+            noBtn.style.transform = `scale(${noScale})`;
         });
 
-        // Lógica para cuando hace clic en "SÍ"
+        // Botón Sí
         yesBtn.addEventListener('click', () => {
-            // 1. Ocultar la pregunta y mostrar la sorpresa
-            questionScreen.style.display = 'none';
-            successScreen.style.display = 'block';
-            
-            // 2. Intentar reproducir la música (musica.mp3)
-            loveSong.play().catch(error => {
-                console.log("Error al reproducir audio: ", error);
-            });
-
-            // 3. Cambiar el fondo a un rosa más intenso
-            document.body.style.backgroundColor = "#f8bbd0";
+            document.getElementById('question-screen').style.display = 'none';
+            document.getElementById('success-screen').style.display = 'block';
+            document.querySelector('#loveSong').play();
+            document.body.style.background = "linear-gradient(135deg, #ffc2d1, #ff8fab)";
         });
     </script>
 </body>
