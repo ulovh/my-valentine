@@ -7,16 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --rosa-claro: #ffecf2;
+            /* Paleta de colores pasteles más cálidos y oscuros */
+            --fondo-oscuro: #f8bbd0; 
             --rosa-fuerte: #ff8fab;
-            --lila-pastel: #e2d1f9;
-            --texto: #7d5a5a;
+            --lila-profundo: #d1c4e9;
+            --texto: #5d4037;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: linear-gradient(135deg, var(--rosa-claro), var(--lila-pastel));
+            background: linear-gradient(135deg, var(--fondo-oscuro), var(--lila-profundo));
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,52 +27,59 @@
             text-align: center;
         }
 
-        /* --- PANTALLA DE INICIO --- */
+        /* --- PANTALLA DE INICIO (SPLASH) --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 240, 245, 0.98); /* Blanco rosado casi opaco */
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            transition: opacity 0.8s ease;
         }
 
+        .cat-hug img {
+            width: 180px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+
+        /* Lluvia de corazones 🩷 */
         .heart-fall {
             position: absolute;
             top: -10%;
-            color: #ffb3c1;
-            font-size: 20px;
+            font-size: 24px;
             animation: fall linear forwards;
             user-select: none;
-            z-index: 1;
+            z-index: 1; /* Por detrás del texto */
+            opacity: 0.7;
         }
 
         @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
+            to { transform: translateY(110vh) rotate(20deg); }
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
+        /* --- CONTENEDOR DE LA CARTA --- */
         .container {
             background: white;
-            padding: 40px 20px;
+            padding: 40px 25px;
             border-radius: 40px;
-            box-shadow: 0 15px 35px rgba(255, 143, 171, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             width: 85%;
             max-width: 400px;
             z-index: 10;
-            display: none;
+            display: none; /* Oculto hasta el click */
             position: relative;
         }
 
         .title {
             font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
+            font-size: 2.3rem;
             color: var(--texto);
-            margin-bottom: 25px;
-            position: relative;
+            margin-bottom: 20px;
             z-index: 20;
         }
 
@@ -80,8 +88,6 @@
             max-width: 200px;
             border-radius: 25px;
             margin-bottom: 20px;
-            position: relative;
-            z-index: 20;
         }
 
         .buttons {
@@ -89,50 +95,43 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-            min-height: 250px;
+            min-height: 250px; /* Espacio para que el botón crezca */
             position: relative;
         }
 
         button {
-            padding: 15px 30px;
+            padding: 15px 35px;
             font-size: 1.1rem;
             border-radius: 50px;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        #yesBtn { 
-            background-color: var(--rosa-fuerte); 
-            color: white; 
-            z-index: 100; /* Siempre encima */
-        }
-
-        #noBtn { 
-            background-color: #d1d1d1; 
-            color: white; 
-            z-index: 50;
-        }
+        #yesBtn { background-color: var(--rosa-fuerte); color: white; z-index: 100; }
+        #noBtn { background-color: #e0e0e0; color: #777; z-index: 50; }
 
         /* --- PANTALLA ÉXITO --- */
         #success-screen { display: none; }
-        .love-phrases p { color: #ad1457; margin-bottom: 10px; font-style: italic; font-size: 1.2rem; }
+        .love-phrases p { color: #880e4f; margin-bottom: 12px; font-style: italic; font-size: 1.1rem; }
     </style>
 </head>
 <body onclick="startApp()">
 
     <div id="splash-screen">
-        <h2 class="title" style="font-size: 1.8rem;">Toca aquí para continuar... ❤️</h2>
-        <p style="color: var(--texto); font-size: 0.9rem;">(Activa el volumen)</p>
+        <div class="cat-hug">
+            <img src="https://media.tenor.com/On7VzRUn698AAAAi/peach-goma.gif" alt="Gaticos Abrazados">
+        </div>
+        <h2 class="title" style="font-size: 1.6rem;">Toca en cualquier lado para continuar... ❤️</h2>
+        <p style="color: #999; font-size: 0.8rem; margin-top: 10px;">(Sube el volumen 🔊)</p>
     </div>
 
     <div class="container" id="main-card">
         <div id="question-screen">
             <h1 class="title">¿Quieres ser mi San Valentín? ❤️</h1>
             <div class="gif-container">
-                <img src="https://media.tenor.com/S-K6_Y9_0m8AAAAi/cat-love.gif" alt="Gatito">
+                <img src="https://media.tenor.com/YV9Xy59fFmAAAAAi/milk-and-mocha-bear.gif" alt="Gatito tierno">
             </div>
             <div class="buttons">
                 <button id="yesBtn">¡SÍ! 😍</button>
@@ -141,13 +140,13 @@
         </div>
 
         <div id="success-screen">
-            <h1 class="title">¡Siii! Sabía que aceptarías ❤️</h1>
+            <h1 class="title">¡Siii! Sabía que dirías que sí ❤️</h1>
             <div class="photo-container">
                 <img src="foto.jpg" alt="Nosotros" onerror="this.src='https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif'">
             </div>
             <div class="love-phrases">
-                <p>Eres la casualidad más hermosa de mi vida.</p>
-                <p><strong>¡Te amo un montón! ✨</strong></p>
+                <p>Eres mi persona favorita en todo el mundo.</p>
+                <p><strong>¡Gracias por estar en mi vida! ✨</strong></p>
             </div>
             <audio id="loveSong" loop>
                 <source src="musica.mp3" type="audio/mpeg">
@@ -159,87 +158,81 @@
         let appStarted = false;
         const yesBtn = document.querySelector('#yesBtn');
         const noBtn = document.querySelector('#noBtn');
-        const mainCard = document.querySelector('#main-card');
-        
         let yesScale = 1;
         let noScale = 1;
 
         function startApp() {
             if (appStarted) return;
             appStarted = true;
-            document.getElementById('splash-screen').style.display = 'none';
-            mainCard.style.display = 'block';
+            document.getElementById('splash-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('main-card').style.display = 'block';
+            }, 800);
             createHearts();
         }
 
+        // Lluvia lenta de corazones 🩷
         function createHearts() {
             setInterval(() => {
                 const heart = document.createElement('div');
-                heart.innerHTML = '❤️';
+                heart.innerHTML = '🩷';
                 heart.classList.add('heart-fall');
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                heart.style.animationDuration = (Math.random() * 5 + 4) + 's'; // Más lento (4-9 segundos)
+                heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
                 document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 400);
+                setTimeout(() => heart.remove(), 8000);
+            }, 600); // Frecuencia más espaciada
         }
 
-        // Función para mover el botón NO
         function moverNo() {
-            // Calcular posiciones seguras dentro de la pantalla
-            const padding = 50;
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
+            // Movimiento aleatorio
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40);
             
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
             
-            // Crecer el SÍ y encoger el NO
-            yesScale += 0.8; // Crece rápido
-            noScale -= 0.15; // Se encoge
+            // El SI crece masivamente, el NO se encoge
+            yesScale += 0.7;
+            noScale -= 0.12;
             
-            if (noScale < 0.2) noScale = 0.2; // Que no desaparezca del todo
+            if (noScale < 0.2) noScale = 0.2;
             
             yesBtn.style.transform = `scale(${yesScale})`;
             noBtn.style.transform = `scale(${noScale})`;
 
-            // Si el SÍ ya es gigante, forzamos que esté al frente
-            if(yesScale > 5) {
+            // Si el botón SI es demasiado grande, cubre todo
+            if (yesScale > 6) {
                 yesBtn.style.width = "100vw";
                 yesBtn.style.height = "100vh";
                 yesBtn.style.position = "fixed";
                 yesBtn.style.top = "0";
                 yesBtn.style.left = "0";
                 yesBtn.style.borderRadius = "0";
+                yesBtn.style.zIndex = "1000";
                 yesBtn.style.display = "flex";
-                yesBtn.style.justifyContent = "center";
-                yesBtn.style.alignItems = "center";
-                yesBtn.style.fontSize = "3rem";
+                yesBtn.innerHTML = "¡DI QUE SÍ! ❤️";
             }
         }
 
-        // En celular usamos 'touchstart' para que reaccione al toque
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            moverNo();
-        });
-        
-        // También mantenemos el mouseover para PC
         noBtn.addEventListener('mouseover', moverNo);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moverNo(); });
 
         yesBtn.addEventListener('click', () => {
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'block';
             
-            // Restaurar botón si se hizo gigante
+            // Resetear estilo por si el botón ocupaba toda la pantalla
             yesBtn.style.position = "relative";
             yesBtn.style.width = "auto";
             yesBtn.style.height = "auto";
             yesBtn.style.transform = "scale(1)";
 
             document.querySelector('#loveSong').play();
-            document.body.style.background = "linear-gradient(135deg, #ffc2d1, #ff8fab)";
+            document.body.style.background = "linear-gradient(135deg, #f48fb1, #ce93d8)";
         });
     </script>
 </body>
