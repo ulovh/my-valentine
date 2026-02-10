@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi niña linda ❤️</title>
+    <title>Para mi amor eterno ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Colores más claros y pasteles */
-            --fondo-rosa: #fff0f6;
-            --fondo-lila: #f3e5f5;
-            --rosa-intermedio: #ffc1e3;
+            --fondo-rosa: #fff5f8;
+            --fondo-lila: #f8f0fb;
+            --rosa-fuerte: #ff8fab;
             --texto: #5d4037;
+            --no-color: #757575; /* Gris más oscuro para el NO */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,11 +27,39 @@
             text-align: center;
         }
 
-        /* --- PANTALLA DE INICIO (SPLASH) --- */
+        /* --- BOTÓN VOLVER DISCRETO --- */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: rgba(0,0,0,0.1); /* Casi invisible */
+            cursor: pointer;
+            z-index: 2000;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: none;
+        }
+        .back-btn:hover { color: var(--rosa-fuerte); }
+
+        /* --- LLUVIA DE CORAZONES DIBUJO --- */
+        .heart-fall {
+            position: absolute;
+            top: -10%;
+            font-size: 20px;
+            animation: fall linear forwards;
+            user-select: none;
+            z-index: 1;
+            opacity: 0.5;
+            color: var(--rosa-fuerte);
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* --- PANTALLA DE INICIO --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ffebee, #f3e5f5);
+            background: linear-gradient(135deg, #fff0f5, #f3e5f5);
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -41,24 +69,22 @@
             transition: opacity 0.8s ease;
         }
 
-        .cat-hug img { width: 200px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+        .cat-hug img { width: 220px; margin-bottom: 20px; }
 
-        /* Lluvia de corazones 🩷 */
-        .heart-fall {
-            position: absolute;
-            top: -10%;
-            font-size: 24px;
-            animation: fall linear forwards;
-            user-select: none;
-            z-index: 5;
-            opacity: 0.8;
+        .latido {
+            display: inline-block;
+            animation: beat 1.5s ease-in-out infinite;
+            color: #ff4081;
         }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
+        /* --- CONTENEDORES --- */
         .container {
             background: rgba(255, 255, 255, 0.9);
-            padding: 35px 20px;
+            padding: 35px 25px;
             border-radius: 40px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             width: 85%;
@@ -70,15 +96,14 @@
 
         .title { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #ad1457; margin-bottom: 20px; }
         
-        /* Botones */
         .buttons { display: flex; justify-content: center; align-items: center; gap: 20px; min-height: 200px; position: relative; }
         button { padding: 15px 30px; font-size: 1.1rem; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        
         #yesBtn { background-color: #f06292; color: white; }
-        #noBtn { background-color: #eeeeee; color: #999; }
+        #noBtn { background-color: var(--no-color); color: white; }
 
-        /* Botón Continuar Corazón */
         .btn-continuar {
-            background-color: #ff8fab;
+            background-color: var(--rosa-fuerte);
             color: white;
             padding: 12px 25px;
             border-radius: 30px;
@@ -86,47 +111,33 @@
             display: inline-block;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.4);
-            animation: heartbeat 1.5s infinite;
-        }
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
         }
 
-        /* Pantallas ocultas */
         #success-screen, #final-message { display: none; }
-        .photo-container img { width: 100%; max-width: 180px; border-radius: 20px; margin-bottom: 15px; }
-
-        /* Texto final */
-        .final-text {
-            font-size: 1.1rem;
-            color: #5d4037;
-            line-height: 1.6;
-            background: #fff5f8;
-            padding: 20px;
-            border-radius: 20px;
-            border-left: 5px solid #ff8fab;
-        }
+        .gif-romantico { width: 100%; max-width: 180px; border-radius: 20px; margin-bottom: 15px; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body onload="createHearts()">
 
+    <div class="back-btn" id="backBtn" onclick="goBack()">←</div>
+
     <div id="splash-screen" onclick="startApp()">
         <div class="cat-hug">
             <img src="https://media.tenor.com/On7VzRUn698AAAAi/peach-goma.gif" alt="Gaticos">
         </div>
-        <h2 class="title" style="font-size: 1.8rem; padding: 0 10px;">Toca para continuar... ❤️</h2>
+        <h2 class="title" style="font-size: 1.8rem; padding: 0 20px;">
+            Toca para continuar... <span class="latido">❤️</span>
+        </h2>
     </div>
 
     <div class="container" id="main-card">
         
         <div id="question-screen">
             <h1 class="title">¿Quieres ser mi San Valentín? ❤️</h1>
-            <img src="https://media.tenor.com/YV9Xy59fFmAAAAAi/milk-and-mocha-bear.gif" style="width: 150px; margin-bottom: 20px;">
+            <img class="gif-romantico" src="https://media.tenor.com/7S820S6Gv_0AAAAi/milk-and-mocha.gif" alt="Imagen Romantica 1">
             <div class="buttons">
                 <button id="yesBtn">¡SÍ! 😍</button>
                 <button id="noBtn">No</button>
@@ -134,11 +145,9 @@
         </div>
 
         <div id="success-screen">
-            <h1 class="title">¡Siii! Sabía que dirías que sí ❤️</h1>
-            <div class="photo-container">
-                <img src="foto.jpg" alt="Nosotros" onerror="this.src='https://media.tenor.com/gU_Pb_66tHMAAAAi/goma-goma-cat.gif'">
-            </div>
-            <p style="color: #ad1457; font-style: italic; margin-bottom: 15px;">"Eres lo mejor que me ha pasado."</p>
+            <h1 class="title">Siempre supe que tú amor me pertenecía</h1>
+            <img class="gif-romantico" src="https://media.tenor.com/vH_f9C99vO8AAAAi/milk-and-mocha-bear.gif" alt="Imagen Romantica 2">
+            <p style="color: #ad1457; font-style: italic;">¡Eres lo mejor de mi vida!</p>
             
             <div class="btn-continuar" onclick="showFinal()">Continuar... ❤️</div>
             
@@ -149,40 +158,40 @@
 
         <div id="final-message">
             <h1 class="title">Para mi persona favorita</h1>
-            <div class="final-text">
-                <p>Desde que llegaste a mi vida, cada día tiene un brillo diferente. Tu sonrisa es mi lugar favorito y compartir mi tiempo contigo es el mejor regalo que puedo recibir.</p>
+            <div style="background: #fff5f8; padding: 20px; border-radius: 20px; line-height: 1.6; color: #5d4037;">
+                <p>Aquí irá el texto hermoso que tú escribas para ella. Un espacio dedicado a lo que sientes.</p>
                 <br>
-                <p><strong>Prometo hacerte sonreír hoy y cada uno de nuestros días. Te quiero con todo mi corazón.</strong></p>
+                <p><strong>¡Te amo!</strong></p>
             </div>
-            <img src="https://media.tenor.com/2K_H9bJb5m0AAAAi/cute-love.gif" style="width: 100px; margin-top: 20px;">
         </div>
     </div>
 
     <script>
-        let appStarted = false;
+        let currentStep = 1;
         const yesBtn = document.querySelector('#yesBtn');
         const noBtn = document.querySelector('#noBtn');
+        const backBtn = document.querySelector('#backBtn');
         let yesScale = 1;
 
         function createHearts() {
             setInterval(() => {
                 const heart = document.createElement('div');
-                heart.innerHTML = '🩷';
+                heart.innerHTML = '❣'; // Corazón estilo dibujo
                 heart.classList.add('heart-fall');
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                heart.style.animationDuration = (Math.random() * 5 + 6) + 's'; // Muy lento
                 document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 7000);
-            }, 600);
+                setTimeout(() => heart.remove(), 10000);
+            }, 800);
         }
 
         function startApp() {
-            if (appStarted) return;
-            appStarted = true;
+            currentStep = 2;
             document.getElementById('splash-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash-screen').style.display = 'none';
                 document.getElementById('main-card').style.display = 'block';
+                backBtn.style.display = 'block';
             }, 800);
         }
 
@@ -192,29 +201,40 @@
             noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-            yesScale += 0.7;
+            yesScale += 0.6;
             yesBtn.style.transform = `scale(${yesScale})`;
-            if(yesScale > 6) {
-                yesBtn.style.position = "fixed"; yesBtn.style.inset = "0"; yesBtn.style.zIndex = "1000";
-                yesBtn.innerHTML = "¡DI QUE SÍ! ❤️";
-            }
         }
 
         noBtn.addEventListener('mouseover', moverNo);
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moverNo(); });
 
         yesBtn.addEventListener('click', () => {
+            currentStep = 3;
             document.getElementById('question-screen').style.display = 'none';
             document.getElementById('success-screen').style.display = 'block';
-            yesBtn.style.display = "none";
             document.querySelector('#loveSong').play();
-            document.body.style.background = "linear-gradient(135deg, #fff5f8, #fce4ec)";
         });
 
-        // Función para ir a la última página
         function showFinal() {
+            currentStep = 4;
             document.getElementById('success-screen').style.display = 'none';
             document.getElementById('final-message').style.display = 'block';
+        }
+
+        function goBack() {
+            if (currentStep === 2) {
+                location.reload(); // Vuelve al inicio total
+            } else if (currentStep === 3) {
+                document.getElementById('success-screen').style.display = 'none';
+                document.getElementById('question-screen').style.display = 'block';
+                yesScale = 1;
+                yesBtn.style.transform = `scale(1)`;
+                currentStep = 2;
+            } else if (currentStep === 4) {
+                document.getElementById('final-message').style.display = 'none';
+                document.getElementById('success-screen').style.display = 'block';
+                currentStep = 3;
+            }
         }
     </script>
 </body>
