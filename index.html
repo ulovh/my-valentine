@@ -3,16 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Para Yuliana 💕</title>
+  <title>Para Mi amor 💕</title>
 
-  <!-- ═══ FUENTES ═══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
 
-  <!-- ═══════════════════════════════════════════
-       CSS
-  ═══════════════════════════════════════════ -->
   <style>
     /* ─── Variables ──────────────────────────── */
     :root {
@@ -151,7 +147,6 @@
       box-shadow: 0 14px 32px rgba(200,100,140,.4);
     }
 
-    /* Estrella / sparkle flotante */
     .sparkle {
       position: absolute;
       font-size: 1.4rem;
@@ -271,23 +266,12 @@
       box-shadow: 0 14px 36px rgba(200,100,140,.25);
     }
 
-    /* Imágenes de ejemplo con gradientes pastel temáticos */
-    .gallery-item .img-placeholder {
+    .gallery-item img {
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      gap: .6rem;
+      object-fit: cover;
+      display: block;
     }
-    .gallery-item:nth-child(1) .img-placeholder { background: linear-gradient(145deg,#f9d4df,#fce8f3); }
-    .gallery-item:nth-child(2) .img-placeholder { background: linear-gradient(145deg,#c8e6d4,#e0f4ea); }
-    .gallery-item:nth-child(3) .img-placeholder { background: linear-gradient(145deg,#fce4b8,#fdf0d6); }
-    .gallery-item:nth-child(4) .img-placeholder { background: linear-gradient(145deg,#d6ccf5,#ede8fb); }
-    .gallery-item:nth-child(5) .img-placeholder { background: linear-gradient(145deg,#f7c5d0,#fddde6); }
-    .gallery-item:nth-child(6) .img-placeholder { background: linear-gradient(145deg,#b8e0d8,#d4f0ea); }
 
     .gallery-overlay {
       position: absolute;
@@ -318,7 +302,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       4. MENSAJES SORPRESA (interactiva)
+       4. MENSAJES SORPRESA
     ═══════════════════════════════════════════ */
     #surprises {
       background: var(--white);
@@ -401,7 +385,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       5. RAZONES POR LAS QUE TE AMO
+       5. RAZONES
     ═══════════════════════════════════════════ */
     #reasons {
       background: linear-gradient(160deg, #e8f5ee 0%, #fde8ef 100%);
@@ -472,7 +456,6 @@
       overflow: hidden;
     }
 
-    /* Líneas de carta */
     .letter-paper::before {
       content: '';
       position: absolute;
@@ -531,9 +514,6 @@
       margin-bottom: .3rem;
     }
 
-    /* ═══════════════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════════════ */
     footer {
       position: relative;
       z-index: 1;
@@ -546,9 +526,6 @@
     }
     footer strong { color: var(--rose); }
 
-    /* ═══════════════════════════════════════════
-       SCROLL TOP BUTTON
-    ═══════════════════════════════════════════ */
     #scroll-top {
       position: fixed;
       bottom: 1.8rem;
@@ -570,9 +547,6 @@
     }
     #scroll-top.show { opacity: 1; transform: translateY(0); }
 
-    /* ═══════════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════════ */
     @media (max-width: 600px) {
       .feelings-grid { grid-template-columns: 1fr; }
       .gallery-grid  { grid-template-columns: repeat(2, 1fr); }
@@ -583,22 +557,13 @@
 
 <body>
 
-  <!-- ─── Canvas de corazones flotantes ─── -->
   <canvas id="hearts-canvas"></canvas>
-
-  <!-- ─── Botón subir ─── -->
   <button id="scroll-top" aria-label="Subir al inicio" onclick="window.scrollTo({top:0,behavior:'smooth'})">💕</button>
 
-
-  <!-- ══════════════════════════════════════
-       SECCIÓN 1 · HERO
-  ══════════════════════════════════════ -->
   <section id="hero">
-    <!-- Pétalos decorativos -->
     <div class="hero-petal"></div>
     <div class="hero-petal"></div>
     <div class="hero-petal"></div>
-    <!-- Destellos flotantes -->
     <span class="sparkle">✦</span>
     <span class="sparkle">✧</span>
     <span class="sparkle">✦</span>
@@ -606,26 +571,22 @@
 
     <div class="hero-content fade-in">
       <div class="hero-tag">✦ una dedicatoria especial ✦</div>
-      <h1 class="hero-title">Para ti,<br /><em>Yuliana</em></h1>
+      <h1 class="hero-title">Para ti,<br /><em>Mi amor</em></h1>
       <p class="hero-subtitle">
         Hay personas que llegan a tu vida<br />
-        y la convierten en algo completamente nuevo.
+        y la iluminan de una forma única.
       </p>
       <a href="#feelings" class="btn-hero">Descubrir más ↓</a>
     </div>
   </section>
 
 
-  <!-- ══════════════════════════════════════
-       SECCIÓN 2 · SENTIMIENTOS
-  ══════════════════════════════════════ -->
   <section id="feelings">
     <p class="section-label fade-in">✦ lo que siento ✦</p>
     <h2 class="section-title fade-in">Lo que tú me<br /><em>haces sentir</em></h2>
     <div class="divider fade-in"></div>
 
     <div class="feelings-grid">
-      <!-- Personaliza cada tarjeta a tu gusto -->
       <div class="feeling-card fade-in">
         <div class="feeling-icon">🌸</div>
         <h3>Paz</h3>
@@ -650,9 +611,6 @@
   </section>
 
 
-  <!-- ══════════════════════════════════════
-       SECCIÓN 3 · GALERÍA
-  ══════════════════════════════════════ -->
   <section id="gallery">
     <div class="gallery-header">
       <p class="section-label fade-in">✦ nuestros momentos ✦</p>
@@ -661,33 +619,29 @@
     </div>
 
     <div class="gallery-grid">
-      <!--
-        💡 PERSONALIZAR: Reemplaza el div.img-placeholder con:
-           <img src="tu-foto.jpg" alt="descripción" style="width:100%;height:100%;object-fit:cover;" />
-      -->
       <div class="gallery-item fade-in">
-        <div class="img-placeholder">🌷<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
-        <div class="gallery-overlay"><p class="gallery-caption">El día que todo cambió 🌷</p></div>
+        <img src="input_file_0.png" alt="Recuerdo 1">
+        <div class="gallery-overlay"><p class="gallery-caption">Un día inolvidable juntos 🌷</p></div>
       </div>
       <div class="gallery-item fade-in">
-        <div class="img-placeholder">🌿<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
-        <div class="gallery-overlay"><p class="gallery-caption">Ese paseo que tanto me gustó 🌿</p></div>
+        <img src="input_file_1.png" alt="Recuerdo 2">
+        <div class="gallery-overlay"><p class="gallery-caption">Caminando de tu mano 🌿</p></div>
       </div>
       <div class="gallery-item fade-in">
-        <div class="img-placeholder">☕<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
-        <div class="gallery-overlay"><p class="gallery-caption">Esas tardes de café ☕</p></div>
+        <img src="input_file_2.png" alt="Recuerdo 3">
+        <div class="gallery-overlay"><p class="gallery-caption">Tu mirada que lo dice todo ✨</p></div>
       </div>
       <div class="gallery-item fade-in">
-        <div class="img-placeholder">🌙<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
-        <div class="gallery-overlay"><p class="gallery-caption">Bajo las estrellas contigo 🌙</p></div>
+        <img src="input_file_3.png" alt="Recuerdo 4">
+        <div class="gallery-overlay"><p class="gallery-caption">Momentos mágicos contigo 🌙</p></div>
       </div>
       <div class="gallery-item fade-in">
-        <div class="img-placeholder">💕<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
-        <div class="gallery-overlay"><p class="gallery-caption">Tu sonrisa que nunca olvido 💕</p></div>
+        <img src="input_file_4.png" alt="Recuerdo 5">
+        <div class="gallery-overlay"><p class="gallery-caption">Nuestras tardes favoritas 💕</p></div>
       </div>
       <div class="gallery-item fade-in">
-        <div class="img-placeholder">🌅<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
-        <div class="gallery-overlay"><p class="gallery-caption">Cada amanecer a tu lado 🌅</p></div>
+        <img src="input_file_5.png" alt="Recuerdo 6">
+        <div class="gallery-overlay"><p class="gallery-caption">Para siempre en mi mente 🌅</p></div>
       </div>
     </div>
 
@@ -695,9 +649,6 @@
   </section>
 
 
-  <!-- ══════════════════════════════════════
-       SECCIÓN 4 · MENSAJES SORPRESA
-  ══════════════════════════════════════ -->
   <section id="surprises">
     <p class="section-label fade-in">✦ mensajes del corazón ✦</p>
     <h2 class="section-title fade-in">Un mensaje<br /><em>solo para ti</em></h2>
@@ -716,9 +667,6 @@
   </section>
 
 
-  <!-- ══════════════════════════════════════
-       SECCIÓN 5 · RAZONES
-  ══════════════════════════════════════ -->
   <section id="reasons">
     <div class="reasons-header">
       <p class="section-label fade-in">✦ mis razones ✦</p>
@@ -727,7 +675,6 @@
     </div>
 
     <div class="reasons-list">
-      <!-- Personaliza cada razón libremente -->
       <div class="reason-item fade-in"><span class="reason-num">01</span><p class="reason-text">Porque tu risa es la melodía que más me gusta escuchar en el mundo.</p></div>
       <div class="reason-item fade-in"><span class="reason-num">02</span><p class="reason-text">Porque tienes la capacidad de hacer especial cualquier momento ordinario.</p></div>
       <div class="reason-item fade-in"><span class="reason-num">03</span><p class="reason-text">Porque tu manera de ser, única e irrepetible, me enamora cada vez más.</p></div>
@@ -738,20 +685,14 @@
   </section>
 
 
-  <!-- ══════════════════════════════════════
-       SECCIÓN 6 · CARTA FINAL
-  ══════════════════════════════════════ -->
   <section id="letter">
     <p class="section-label fade-in">✦ carta para ti ✦</p>
     <h2 class="section-title fade-in" style="margin-bottom:2rem;">Desde el<br /><em>fondo del corazón</em></h2>
 
     <div class="letter-paper fade-in">
-      <p class="letter-date" id="letter-date"><!-- fecha dinámica --></p>
-      <p class="letter-greeting">Mi querida Yuliana,</p>
+      <p class="letter-date" id="letter-date"></p>
+      <p class="letter-greeting">Mi querida Mi amor,</p>
 
-      <!--
-        💡 PERSONALIZAR: Edita los párrafos de la carta a tu gusto.
-      -->
       <div class="letter-body">
         <p>Hay momentos en la vida en los que las palabras se quedan cortas. Este es uno de ellos. Podría escribir páginas y páginas, y aun así sentiría que no he dicho suficiente sobre lo mucho que significas para mí.</p>
         <br />
@@ -759,29 +700,23 @@
         <br />
         <p>Quiero que sepas que cada detalle tuyo importa, cada gesto, cada palabra, cada silencio. Que pienso en ti en los momentos más inesperados y que eso, lejos de molestarme, me hace sonreír.</p>
         <br />
-        <p>Gracias por existir, Yuliana. Gracias por ser exactamente quien eres.</p>
+        <p>Gracias por existir, mi amor. Gracias por ser exactamente quien eres.</p>
       </div>
 
       <div class="letter-signature">
         <span>con todo mi amor,</span>
-        Tu persona especial 💕
-        <!-- 💡 Cambia "Tu persona especial" por tu nombre -->
+        Tu gatito 💕
       </div>
     </div>
   </section>
 
 
-  <!-- ─── Footer ─── -->
   <footer>
-    Hecho con <strong>💕</strong> especialmente para <strong>Yuliana</strong>
+    Hecho con <strong>💕</strong> especialmente para <strong>Mi amor</strong>
   </footer>
 
-
-  <!-- ═══════════════════════════════════════════
-       JAVASCRIPT
-  ═══════════════════════════════════════════ -->
   <script>
-    /* ─── 1. Fecha dinámica en la carta ─────── */
+    /* ─── 1. Fecha dinámica ─────── */
     const meses = ['enero','febrero','marzo','abril','mayo','junio',
                    'julio','agosto','septiembre','octubre','noviembre','diciembre'];
     const hoy = new Date();
@@ -790,7 +725,6 @@
 
 
     /* ─── 2. Mensajes sorpresa ───────────────── */
-    // 💡 PERSONALIZAR: agrega, edita o elimina mensajes y emojis
     const messages = [
       { emoji: '🌸', text: 'Eres la razón por la que creo en que las personas especiales existen.' },
       { emoji: '✨', text: 'Tu sonrisa podría alegrar el día más gris del mundo.' },
@@ -803,8 +737,6 @@
     ];
 
     let current = -1;
-
-    // Crear los puntos de progreso
     const dotsContainer = document.getElementById('progress-dots');
     messages.forEach((_, i) => {
       const d = document.createElement('div');
@@ -818,34 +750,28 @@
       const msgEl   = document.getElementById('surprise-msg');
       const emojiEl = document.getElementById('surprise-emoji');
 
-      // Fade out → cambio → fade in
       msgEl.style.opacity = '0';
       setTimeout(() => {
         msgEl.textContent   = messages[current].text;
         emojiEl.textContent = messages[current].emoji;
-        // Reiniciar animación del emoji
         emojiEl.style.animation = 'none';
         void emojiEl.offsetWidth;
         emojiEl.style.animation = '';
         msgEl.style.opacity = '1';
       }, 400);
 
-      // Actualizar puntos
       document.querySelectorAll('.dot').forEach((d, i) => {
         d.classList.toggle('active', i === current);
       });
     }
 
-    // Mostrar primer mensaje automáticamente
     setTimeout(nextMessage, 600);
 
-
-    /* ─── 3. Animaciones al hacer scroll ────── */
+    /* ─── 3. Scroll Observer ────── */
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
-          // Stagger para hijos del mismo padre
           const siblings = e.target.parentElement.querySelectorAll('.fade-in:not(.visible)');
           siblings.forEach((s, i) => {
             setTimeout(() => s.classList.add('visible'), i * 90);
@@ -856,15 +782,12 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-
-    /* ─── 4. Botón "volver arriba" ───────────── */
     const scrollBtn = document.getElementById('scroll-top');
     window.addEventListener('scroll', () => {
       scrollBtn.classList.toggle('show', window.scrollY > 400);
     });
 
-
-    /* ─── 5. Corazones flotantes en canvas ───── */
+    /* ─── 4. Canvas Corazones ───── */
     const canvas  = document.getElementById('hearts-canvas');
     const ctx     = canvas.getContext('2d');
     let hearts    = [];
@@ -877,7 +800,6 @@
     window.addEventListener('resize', resize);
     resize();
 
-    // Dibuja un corazón con path2D
     function drawHeart(x, y, size, color, alpha) {
       ctx.save();
       ctx.globalAlpha = alpha;
@@ -907,7 +829,7 @@
     let frame = 0;
     function animateHearts() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (frame % 55 === 0) spawnHeart();  // frecuencia de aparición
+      if (frame % 55 === 0) spawnHeart();
       frame++;
       hearts = hearts.filter(h => h.y > -30);
       hearts.forEach(h => {
