@@ -1,241 +1,923 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi amor eterno ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --fondo-rosa: #fff5f8;
-            --fondo-lila: #f8f0fb;
-            --rosa-fuerte: #ff8fab;
-            --texto: #5d4037;
-            --no-color: #757575; /* Gris más oscuro para el NO */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Yuliana 💕</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <!-- ═══ FUENTES ═══ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
 
-        body {
-            background: linear-gradient(135deg, var(--fondo-rosa), var(--fondo-lila));
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Quicksand', sans-serif;
-            overflow: hidden;
-            text-align: center;
-        }
+  <!-- ═══════════════════════════════════════════
+       CSS
+  ═══════════════════════════════════════════ -->
+  <style>
+    /* ─── Variables ──────────────────────────── */
+    :root {
+      --rose:       #f7c5d0;
+      --rose-deep:  #e8a0b4;
+      --mint:       #c8e6d4;
+      --mint-deep:  #a8d5bc;
+      --cream:      #fdf6f0;
+      --blush:      #fde8ef;
+      --text:       #5a3a4a;
+      --text-light: #9b7080;
+      --gold:       #d4a96a;
+      --white:      #ffffff;
 
-        /* --- BOTÓN VOLVER DISCRETO --- */
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 1.5rem;
-            color: rgba(0,0,0,0.1); /* Casi invisible */
-            cursor: pointer;
-            z-index: 2000;
-            text-decoration: none;
-            transition: color 0.3s;
-            display: none;
-        }
-        .back-btn:hover { color: var(--rosa-fuerte); }
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body:    'Lato', sans-serif;
+    }
 
-        /* --- LLUVIA DE CORAZONES DIBUJO --- */
-        .heart-fall {
-            position: absolute;
-            top: -10%;
-            font-size: 20px;
-            animation: fall linear forwards;
-            user-select: none;
-            z-index: 1;
-            opacity: 0.5;
-            color: var(--rosa-fuerte);
-        }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    /* ─── Reset & Base ───────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* --- PANTALLA DE INICIO --- */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #fff0f5, #f3e5f5);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.8s ease;
-        }
+    html { scroll-behavior: smooth; }
 
-        .cat-hug img { width: 220px; margin-bottom: 20px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
-        .latido {
-            display: inline-block;
-            animation: beat 1.5s ease-in-out infinite;
-            color: #ff4081;
-        }
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
+    /* ─── Corazones flotantes (canvas) ──────── */
+    #hearts-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        /* --- CONTENEDORES --- */
-        .container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 35px 25px;
-            border-radius: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            width: 85%;
-            max-width: 400px;
-            z-index: 10;
-            display: none;
-            animation: fadeIn 0.8s ease;
-        }
+    /* ─── Sección base ───────────────────────── */
+    section {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+    }
 
-        .title { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #ad1457; margin-bottom: 20px; }
-        
-        .buttons { display: flex; justify-content: center; align-items: center; gap: 20px; min-height: 200px; position: relative; }
-        button { padding: 15px 30px; font-size: 1.1rem; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; transition: all 0.3s; }
-        
-        #yesBtn { background-color: #f06292; color: white; }
-        #noBtn { background-color: var(--no-color); color: white; }
+    /* ─── Utilidades ─────────────────────────── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        .btn-continuar {
-            background-color: var(--rosa-fuerte);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 30px;
-            margin-top: 20px;
-            display: inline-block;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
-        }
+    /* ═══════════════════════════════════════════
+       1. HERO / BIENVENIDA
+    ═══════════════════════════════════════════ */
+    #hero {
+      background: linear-gradient(160deg, #fde8ef 0%, #fdf6f0 50%, #e8f5ee 100%);
+      text-align: center;
+      overflow: hidden;
+    }
 
-        #success-screen, #final-message { display: none; }
-        .gif-romantico { width: 100%; max-width: 180px; border-radius: 20px; margin-bottom: 15px; }
+    .hero-petal {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50% 0 50% 0;
+      opacity: .18;
+    }
+    .hero-petal:nth-child(1) { background: var(--rose-deep);  top: -60px; left: -60px; }
+    .hero-petal:nth-child(2) { background: var(--mint-deep);  bottom: -70px; right: -50px; width:280px; height:280px; }
+    .hero-petal:nth-child(3) { background: var(--gold);       top: 40%;  left: 70%; width:150px; height:150px; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+    .hero-content { position: relative; z-index: 2; max-width: 640px; }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .72rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      background: rgba(247,197,208,.3);
+      padding: .35rem 1.1rem;
+      border-radius: 50px;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 10vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 1.4rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose-deep);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 2.4rem;
+    }
+
+    .btn-hero {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: .8rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--rose-deep), #c97a9a);
+      padding: .85rem 2.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(200,100,140,.3);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-hero:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(200,100,140,.4);
+    }
+
+    /* Estrella / sparkle flotante */
+    .sparkle {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: sparkle-drift 6s ease-in-out infinite;
+      opacity: .6;
+    }
+    .sparkle:nth-child(4) { top: 18%; left: 12%; animation-delay: 0s; }
+    .sparkle:nth-child(5) { top: 70%; left: 88%; animation-delay: 1.5s; }
+    .sparkle:nth-child(6) { top: 30%; left: 82%; animation-delay: 3s;   }
+    .sparkle:nth-child(7) { top: 80%; left: 10%; animation-delay: 4.5s; }
+
+    @keyframes sparkle-drift {
+      0%, 100% { transform: translateY(0) rotate(0deg);   opacity: .6; }
+      50%       { transform: translateY(-18px) rotate(20deg); opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════════
+       2. SENTIMIENTOS
+    ═══════════════════════════════════════════ */
+    #feelings {
+      background: var(--white);
+      text-align: center;
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: .68rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--mint-deep);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 1.4rem;
+    }
+    .section-title em { font-style: italic; color: var(--rose-deep); }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rose), var(--mint));
+      margin: 0 auto 2.5rem;
+      border-radius: 2px;
+    }
+
+    .feelings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .feeling-card {
+      background: linear-gradient(145deg, #fff8fb, #f3fbf6);
+      border: 1px solid rgba(232,160,180,.2);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .feeling-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(200,100,140,.12);
+    }
+
+    .feeling-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+
+    .feeling-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: .6rem;
+    }
+
+    .feeling-card p {
+      font-size: .88rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════
+       3. GALERÍA DE RECUERDOS
+    ═══════════════════════════════════════════ */
+    #gallery {
+      background: linear-gradient(170deg, #fde8ef 0%, #e8f5ee 100%);
+    }
+
+    .gallery-header { text-align: center; margin-bottom: 2.5rem; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,.08);
+      transition: transform .35s, box-shadow .35s;
+    }
+    .gallery-item:hover {
+      transform: scale(1.04);
+      box-shadow: 0 14px 36px rgba(200,100,140,.25);
+    }
+
+    /* Imágenes de ejemplo con gradientes pastel temáticos */
+    .gallery-item .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      gap: .6rem;
+    }
+    .gallery-item:nth-child(1) .img-placeholder { background: linear-gradient(145deg,#f9d4df,#fce8f3); }
+    .gallery-item:nth-child(2) .img-placeholder { background: linear-gradient(145deg,#c8e6d4,#e0f4ea); }
+    .gallery-item:nth-child(3) .img-placeholder { background: linear-gradient(145deg,#fce4b8,#fdf0d6); }
+    .gallery-item:nth-child(4) .img-placeholder { background: linear-gradient(145deg,#d6ccf5,#ede8fb); }
+    .gallery-item:nth-child(5) .img-placeholder { background: linear-gradient(145deg,#f7c5d0,#fddde6); }
+    .gallery-item:nth-child(6) .img-placeholder { background: linear-gradient(145deg,#b8e0d8,#d4f0ea); }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(90,58,74,.75) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .35s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.2rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    .gallery-caption {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--white);
+      line-height: 1.4;
+    }
+
+    .gallery-tip {
+      margin-top: 1.4rem;
+      font-size: .78rem;
+      color: var(--text-light);
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════
+       4. MENSAJES SORPRESA (interactiva)
+    ═══════════════════════════════════════════ */
+    #surprises {
+      background: var(--white);
+      text-align: center;
+    }
+
+    .surprise-box {
+      max-width: 560px;
+      width: 100%;
+      background: linear-gradient(145deg, #fff5f8, #f5fff9);
+      border: 1.5px solid rgba(232,160,180,.3);
+      border-radius: 28px;
+      padding: 3rem 2rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 8px 32px rgba(200,100,140,.08);
+    }
+
+    .surprise-message {
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 3vw, 1.6rem);
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .5s;
+    }
+
+    .surprise-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      display: block;
+      animation: bounce-emoji .7s ease;
+    }
+    @keyframes bounce-emoji {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.35); }
+    }
+
+    .btn-surprise {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--mint-deep), #7cc4a0);
+      border: none;
+      padding: .9rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(120,190,160,.35);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-surprise:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(120,190,160,.45);
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: .5rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(200,100,140,.2);
+      transition: background .4s, transform .4s;
+    }
+    .dot.active {
+      background: var(--rose-deep);
+      transform: scale(1.3);
+    }
+
+    /* ═══════════════════════════════════════════
+       5. RAZONES POR LAS QUE TE AMO
+    ═══════════════════════════════════════════ */
+    #reasons {
+      background: linear-gradient(160deg, #e8f5ee 0%, #fde8ef 100%);
+    }
+
+    .reasons-header { text-align: center; margin-bottom: 2.5rem; }
+
+    .reasons-list {
+      max-width: 680px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .reason-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      background: rgba(255,255,255,.65);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 16px;
+      padding: 1.3rem 1.5rem;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .reason-item:hover {
+      transform: translateX(8px);
+      box-shadow: 0 8px 24px rgba(200,100,140,.14);
+    }
+
+    .reason-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--rose-deep);
+      min-width: 2.2rem;
+      line-height: 1;
+    }
+
+    .reason-text {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════════
+       6. CARTA FINAL
+    ═══════════════════════════════════════════ */
+    #letter {
+      background: var(--blush);
+      text-align: center;
+    }
+
+    .letter-paper {
+      max-width: 640px;
+      width: 100%;
+      background: var(--white);
+      border-radius: 24px;
+      padding: clamp(2rem, 6vw, 4rem);
+      box-shadow:
+        0 2px 0 rgba(232,160,180,.3),
+        0 20px 60px rgba(200,100,140,.12),
+        inset 0 1px 0 rgba(255,255,255,.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Líneas de carta */
+    .letter-paper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 35px,
+        rgba(200,230,212,.25) 35px,
+        rgba(200,230,212,.25) 36px
+      );
+      pointer-events: none;
+    }
+
+    .letter-date {
+      font-family: var(--font-body);
+      font-size: .75rem;
+      letter-spacing: .15em;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .letter-greeting {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--rose-deep);
+      margin-bottom: 1.5rem;
+    }
+
+    .letter-body {
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      line-height: 1.9;
+      color: var(--text);
+      text-align: left;
+      margin-bottom: 2rem;
+    }
+
+    .letter-signature {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--text);
+      text-align: right;
+    }
+    .letter-signature span {
+      display: block;
+      font-size: .8rem;
+      font-family: var(--font-body);
+      letter-spacing: .12em;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: .3rem;
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      background: var(--text);
+      color: rgba(255,255,255,.5);
+      font-size: .75rem;
+      letter-spacing: .1em;
+    }
+    footer strong { color: var(--rose); }
+
+    /* ═══════════════════════════════════════════
+       SCROLL TOP BUTTON
+    ═══════════════════════════════════════════ */
+    #scroll-top {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      z-index: 999;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose-deep), #c97a9a);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 6px 18px rgba(200,100,140,.4);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .35s, transform .35s;
+    }
+    #scroll-top.show { opacity: 1; transform: translateY(0); }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .feelings-grid { grid-template-columns: 1fr; }
+      .gallery-grid  { grid-template-columns: repeat(2, 1fr); }
+      .reason-item   { flex-direction: column; gap: .4rem; }
+    }
+  </style>
 </head>
-<body onload="createHearts()">
 
-    <div class="back-btn" id="backBtn" onclick="goBack()">←</div>
+<body>
 
-    <div id="splash-screen" onclick="startApp()">
-        <div class="cat-hug">
-            <img src="https://media.tenor.com/On7VzRUn698AAAAi/peach-goma.gif" alt="Gaticos">
-        </div>
-        <h2 class="title" style="font-size: 1.8rem; padding: 0 20px;">
-            Toca para continuar... <span class="latido">❤️</span>
-        </h2>
+  <!-- ─── Canvas de corazones flotantes ─── -->
+  <canvas id="hearts-canvas"></canvas>
+
+  <!-- ─── Botón subir ─── -->
+  <button id="scroll-top" aria-label="Subir al inicio" onclick="window.scrollTo({top:0,behavior:'smooth'})">💕</button>
+
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 1 · HERO
+  ══════════════════════════════════════ -->
+  <section id="hero">
+    <!-- Pétalos decorativos -->
+    <div class="hero-petal"></div>
+    <div class="hero-petal"></div>
+    <div class="hero-petal"></div>
+    <!-- Destellos flotantes -->
+    <span class="sparkle">✦</span>
+    <span class="sparkle">✧</span>
+    <span class="sparkle">✦</span>
+    <span class="sparkle">✧</span>
+
+    <div class="hero-content fade-in">
+      <div class="hero-tag">✦ una dedicatoria especial ✦</div>
+      <h1 class="hero-title">Para ti,<br /><em>Yuliana</em></h1>
+      <p class="hero-subtitle">
+        Hay personas que llegan a tu vida<br />
+        y la convierten en algo completamente nuevo.
+      </p>
+      <a href="#feelings" class="btn-hero">Descubrir más ↓</a>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 2 · SENTIMIENTOS
+  ══════════════════════════════════════ -->
+  <section id="feelings">
+    <p class="section-label fade-in">✦ lo que siento ✦</p>
+    <h2 class="section-title fade-in">Lo que tú me<br /><em>haces sentir</em></h2>
+    <div class="divider fade-in"></div>
+
+    <div class="feelings-grid">
+      <!-- Personaliza cada tarjeta a tu gusto -->
+      <div class="feeling-card fade-in">
+        <div class="feeling-icon">🌸</div>
+        <h3>Paz</h3>
+        <p>Cuando estoy contigo el mundo se detiene y todo tiene sentido.</p>
+      </div>
+      <div class="feeling-card fade-in">
+        <div class="feeling-icon">✨</div>
+        <h3>Admiración</h3>
+        <p>Tu forma de ver la vida me sorprende y me inspira todos los días.</p>
+      </div>
+      <div class="feeling-card fade-in">
+        <div class="feeling-icon">🌿</div>
+        <h3>Calma</h3>
+        <p>Tu voz es el lugar más tranquilo que conozco.</p>
+      </div>
+      <div class="feeling-card fade-in">
+        <div class="feeling-icon">💫</div>
+        <h3>Ilusión</h3>
+        <p>Cada día contigo es un motivo nuevo para sonreír sin razón.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 3 · GALERÍA
+  ══════════════════════════════════════ -->
+  <section id="gallery">
+    <div class="gallery-header">
+      <p class="section-label fade-in">✦ nuestros momentos ✦</p>
+      <h2 class="section-title fade-in">Recuerdos que<br /><em>guardo en el corazón</em></h2>
+      <div class="divider fade-in"></div>
     </div>
 
-    <div class="container" id="main-card">
-        
-        <div id="question-screen">
-            <h1 class="title">¿Quieres ser mi San Valentín? ❤️</h1>
-            <img class="gif-romantico" src="https://media.tenor.com/7S820S6Gv_0AAAAi/milk-and-mocha.gif" alt="Imagen Romantica 1">
-            <div class="buttons">
-                <button id="yesBtn">¡SÍ! 😍</button>
-                <button id="noBtn">No</button>
-            </div>
-        </div>
-
-        <div id="success-screen">
-            <h1 class="title">Siempre supe que tú amor me pertenecía</h1>
-            <img class="gif-romantico" src="https://media.tenor.com/vH_f9C99vO8AAAAi/milk-and-mocha-bear.gif" alt="Imagen Romantica 2">
-            <p style="color: #ad1457; font-style: italic;">¡Eres lo mejor de mi vida!</p>
-            
-            <div class="btn-continuar" onclick="showFinal()">Continuar... ❤️</div>
-            
-            <audio id="loveSong" loop>
-                <source src="musica.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <div id="final-message">
-            <h1 class="title">Para mi persona favorita</h1>
-            <div style="background: #fff5f8; padding: 20px; border-radius: 20px; line-height: 1.6; color: #5d4037;">
-                <p>Aquí irá el texto hermoso que tú escribas para ella. Un espacio dedicado a lo que sientes.</p>
-                <br>
-                <p><strong>¡Te amo!</strong></p>
-            </div>
-        </div>
+    <div class="gallery-grid">
+      <!--
+        💡 PERSONALIZAR: Reemplaza el div.img-placeholder con:
+           <img src="tu-foto.jpg" alt="descripción" style="width:100%;height:100%;object-fit:cover;" />
+      -->
+      <div class="gallery-item fade-in">
+        <div class="img-placeholder">🌷<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
+        <div class="gallery-overlay"><p class="gallery-caption">El día que todo cambió 🌷</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="img-placeholder">🌿<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
+        <div class="gallery-overlay"><p class="gallery-caption">Ese paseo que tanto me gustó 🌿</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="img-placeholder">☕<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
+        <div class="gallery-overlay"><p class="gallery-caption">Esas tardes de café ☕</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="img-placeholder">🌙<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
+        <div class="gallery-overlay"><p class="gallery-caption">Bajo las estrellas contigo 🌙</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="img-placeholder">💕<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
+        <div class="gallery-overlay"><p class="gallery-caption">Tu sonrisa que nunca olvido 💕</p></div>
+      </div>
+      <div class="gallery-item fade-in">
+        <div class="img-placeholder">🌅<small style="font-size:.7rem;color:#9b7080">Tu foto aquí</small></div>
+        <div class="gallery-overlay"><p class="gallery-caption">Cada amanecer a tu lado 🌅</p></div>
+      </div>
     </div>
 
-    <script>
-        let currentStep = 1;
-        const yesBtn = document.querySelector('#yesBtn');
-        const noBtn = document.querySelector('#noBtn');
-        const backBtn = document.querySelector('#backBtn');
-        let yesScale = 1;
+    <p class="gallery-tip fade-in">💡 Pasa el cursor sobre cada imagen para ver el recuerdo</p>
+  </section>
 
-        function createHearts() {
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.innerHTML = '❣'; // Corazón estilo dibujo
-                heart.classList.add('heart-fall');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 5 + 6) + 's'; // Muy lento
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 10000);
-            }, 800);
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 4 · MENSAJES SORPRESA
+  ══════════════════════════════════════ -->
+  <section id="surprises">
+    <p class="section-label fade-in">✦ mensajes del corazón ✦</p>
+    <h2 class="section-title fade-in">Un mensaje<br /><em>solo para ti</em></h2>
+    <div class="divider fade-in"></div>
+
+    <div class="surprise-box fade-in">
+      <span class="surprise-emoji" id="surprise-emoji">💌</span>
+      <p class="surprise-message" id="surprise-msg">
+        Presiona el botón y recibe un mensaje especial…
+      </p>
+      <div class="progress-dots" id="progress-dots"></div>
+      <button class="btn-surprise" id="btn-msg" onclick="nextMessage()">
+        ✦ Nuevo mensaje
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 5 · RAZONES
+  ══════════════════════════════════════ -->
+  <section id="reasons">
+    <div class="reasons-header">
+      <p class="section-label fade-in">✦ mis razones ✦</p>
+      <h2 class="section-title fade-in">Razones por las que<br /><em>pienso en ti</em></h2>
+      <div class="divider fade-in"></div>
+    </div>
+
+    <div class="reasons-list">
+      <!-- Personaliza cada razón libremente -->
+      <div class="reason-item fade-in"><span class="reason-num">01</span><p class="reason-text">Porque tu risa es la melodía que más me gusta escuchar en el mundo.</p></div>
+      <div class="reason-item fade-in"><span class="reason-num">02</span><p class="reason-text">Porque tienes la capacidad de hacer especial cualquier momento ordinario.</p></div>
+      <div class="reason-item fade-in"><span class="reason-num">03</span><p class="reason-text">Porque tu manera de ser, única e irrepetible, me enamora cada vez más.</p></div>
+      <div class="reason-item fade-in"><span class="reason-num">04</span><p class="reason-text">Porque con solo mirarte sé que todo va a estar bien.</p></div>
+      <div class="reason-item fade-in"><span class="reason-num">05</span><p class="reason-text">Porque eres la persona en quien primero pienso cuando algo me emociona.</p></div>
+      <div class="reason-item fade-in"><span class="reason-num">06</span><p class="reason-text">Porque estar cerca de ti es el lugar donde más me siento yo mismo.</p></div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 6 · CARTA FINAL
+  ══════════════════════════════════════ -->
+  <section id="letter">
+    <p class="section-label fade-in">✦ carta para ti ✦</p>
+    <h2 class="section-title fade-in" style="margin-bottom:2rem;">Desde el<br /><em>fondo del corazón</em></h2>
+
+    <div class="letter-paper fade-in">
+      <p class="letter-date" id="letter-date"><!-- fecha dinámica --></p>
+      <p class="letter-greeting">Mi querida Yuliana,</p>
+
+      <!--
+        💡 PERSONALIZAR: Edita los párrafos de la carta a tu gusto.
+      -->
+      <div class="letter-body">
+        <p>Hay momentos en la vida en los que las palabras se quedan cortas. Este es uno de ellos. Podría escribir páginas y páginas, y aun así sentiría que no he dicho suficiente sobre lo mucho que significas para mí.</p>
+        <br />
+        <p>Desde que llegaste, algo en mí cambió. No de golpe, sino suavemente, como cuando la luz del amanecer entra por la ventana y lo ilumina todo sin que te des cuenta. Así entraste tú.</p>
+        <br />
+        <p>Quiero que sepas que cada detalle tuyo importa, cada gesto, cada palabra, cada silencio. Que pienso en ti en los momentos más inesperados y que eso, lejos de molestarme, me hace sonreír.</p>
+        <br />
+        <p>Gracias por existir, Yuliana. Gracias por ser exactamente quien eres.</p>
+      </div>
+
+      <div class="letter-signature">
+        <span>con todo mi amor,</span>
+        Tu persona especial 💕
+        <!-- 💡 Cambia "Tu persona especial" por tu nombre -->
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    Hecho con <strong>💕</strong> especialmente para <strong>Yuliana</strong>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+    /* ─── 1. Fecha dinámica en la carta ─────── */
+    const meses = ['enero','febrero','marzo','abril','mayo','junio',
+                   'julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const hoy = new Date();
+    document.getElementById('letter-date').textContent =
+      `${hoy.getDate()} de ${meses[hoy.getMonth()]} de ${hoy.getFullYear()}`;
+
+
+    /* ─── 2. Mensajes sorpresa ───────────────── */
+    // 💡 PERSONALIZAR: agrega, edita o elimina mensajes y emojis
+    const messages = [
+      { emoji: '🌸', text: 'Eres la razón por la que creo en que las personas especiales existen.' },
+      { emoji: '✨', text: 'Tu sonrisa podría alegrar el día más gris del mundo.' },
+      { emoji: '🌿', text: 'Tenerte cerca es como respirar aire fresco. Siempre.' },
+      { emoji: '💫', text: 'Cada vez que pienso en ti, sonrío sin querer. Aún no sé cómo parar.' },
+      { emoji: '🌷', text: 'Si pudiera elegir a alguien con quien ver el atardecer todos los días, te elegiría a ti.' },
+      { emoji: '🦋', text: 'Hay algo en tu forma de ser que me hace querer ser mejor persona.' },
+      { emoji: '🌙', text: 'Incluso en los momentos más tranquilos, pienso en ti. Especialmente en esos.' },
+      { emoji: '💌', text: 'Ojalá puedas sentir todo lo que yo siento cuando estás cerca.' },
+    ];
+
+    let current = -1;
+
+    // Crear los puntos de progreso
+    const dotsContainer = document.getElementById('progress-dots');
+    messages.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'dot';
+      d.id = `dot-${i}`;
+      dotsContainer.appendChild(d);
+    });
+
+    function nextMessage() {
+      current = (current + 1) % messages.length;
+      const msgEl   = document.getElementById('surprise-msg');
+      const emojiEl = document.getElementById('surprise-emoji');
+
+      // Fade out → cambio → fade in
+      msgEl.style.opacity = '0';
+      setTimeout(() => {
+        msgEl.textContent   = messages[current].text;
+        emojiEl.textContent = messages[current].emoji;
+        // Reiniciar animación del emoji
+        emojiEl.style.animation = 'none';
+        void emojiEl.offsetWidth;
+        emojiEl.style.animation = '';
+        msgEl.style.opacity = '1';
+      }, 400);
+
+      // Actualizar puntos
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    // Mostrar primer mensaje automáticamente
+    setTimeout(nextMessage, 600);
+
+
+    /* ─── 3. Animaciones al hacer scroll ────── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          // Stagger para hijos del mismo padre
+          const siblings = e.target.parentElement.querySelectorAll('.fade-in:not(.visible)');
+          siblings.forEach((s, i) => {
+            setTimeout(() => s.classList.add('visible'), i * 90);
+          });
         }
+      });
+    }, { threshold: 0.12 });
 
-        function startApp() {
-            currentStep = 2;
-            document.getElementById('splash-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('main-card').style.display = 'block';
-                backBtn.style.display = 'block';
-            }, 800);
-        }
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        function moverNo() {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-            yesScale += 0.6;
-            yesBtn.style.transform = `scale(${yesScale})`;
-        }
 
-        noBtn.addEventListener('mouseover', moverNo);
-        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moverNo(); });
+    /* ─── 4. Botón "volver arriba" ───────────── */
+    const scrollBtn = document.getElementById('scroll-top');
+    window.addEventListener('scroll', () => {
+      scrollBtn.classList.toggle('show', window.scrollY > 400);
+    });
 
-        yesBtn.addEventListener('click', () => {
-            currentStep = 3;
-            document.getElementById('question-screen').style.display = 'none';
-            document.getElementById('success-screen').style.display = 'block';
-            document.querySelector('#loveSong').play();
-        });
 
-        function showFinal() {
-            currentStep = 4;
-            document.getElementById('success-screen').style.display = 'none';
-            document.getElementById('final-message').style.display = 'block';
-        }
+    /* ─── 5. Corazones flotantes en canvas ───── */
+    const canvas  = document.getElementById('hearts-canvas');
+    const ctx     = canvas.getContext('2d');
+    let hearts    = [];
+    const COLORS  = ['#f7c5d0','#e8a0b4','#c8e6d4','#a8d5bc','#fce8f3'];
 
-        function goBack() {
-            if (currentStep === 2) {
-                location.reload(); // Vuelve al inicio total
-            } else if (currentStep === 3) {
-                document.getElementById('success-screen').style.display = 'none';
-                document.getElementById('question-screen').style.display = 'block';
-                yesScale = 1;
-                yesBtn.style.transform = `scale(1)`;
-                currentStep = 2;
-            } else if (currentStep === 4) {
-                document.getElementById('final-message').style.display = 'none';
-                document.getElementById('success-screen').style.display = 'block';
-                currentStep = 3;
-            }
-        }
-    </script>
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Dibuja un corazón con path2D
+    function drawHeart(x, y, size, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle   = color;
+      ctx.translate(x, y);
+      ctx.scale(size, size);
+      ctx.beginPath();
+      ctx.moveTo(0, -0.5);
+      ctx.bezierCurveTo( 0.5, -1,  1,  0,  0,  0.8);
+      ctx.bezierCurveTo(-1,   0,  -0.5, -1, 0, -0.5);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function spawnHeart() {
+      hearts.push({
+        x:     Math.random() * canvas.width,
+        y:     canvas.height + 20,
+        size:  6 + Math.random() * 10,
+        speed: 0.4 + Math.random() * 0.7,
+        drift: (Math.random() - .5) * 0.4,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        alpha: 0.12 + Math.random() * 0.18,
+      });
+    }
+
+    let frame = 0;
+    function animateHearts() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (frame % 55 === 0) spawnHeart();  // frecuencia de aparición
+      frame++;
+      hearts = hearts.filter(h => h.y > -30);
+      hearts.forEach(h => {
+        h.y    -= h.speed;
+        h.x    += h.drift;
+        drawHeart(h.x, h.y, h.size, h.color, h.alpha);
+      });
+      requestAnimationFrame(animateHearts);
+    }
+    animateHearts();
+  </script>
 </body>
 </html>
